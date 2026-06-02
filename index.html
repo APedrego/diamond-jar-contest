@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamond Jar Contest — Restoration HQ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --orange:       #D4511A;
+    --orange-light: #E86A35;
+    --orange-dark:  #A83D12;
+    --blue:         #1B4E8A;
+    --blue-light:   #2563B0;
+    --blue-dark:    #0F3260;
+    --blue-bright:  #3A78C9;
+    --deep:         #0C1826;
+    --surface:      #111F30;
+    --surface2:     #182940;
+    --border-blue:  rgba(42,99,176,0.35);
+    --border-orange:rgba(212,81,26,0.4);
+    --text:         #EEF3FA;
+    --muted:        rgba(238,243,250,0.5);
+    --success:      #2DD4A0;
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 20% 0%, rgba(212,81,26,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 80% 0%, rgba(27,78,138,0.18) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .container {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 1.75rem;
+  }
+  .logo-wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
+    margin-bottom: 1.25rem;
+  }
+  .logo-restoration {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    letter-spacing: 0.06em;
+    color: var(--blue-bright);
+    line-height: 1;
+    font-style: italic;
+  }
+  .logo-hq {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--orange);
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 30px rgba(212,81,26,0.3);
+    font-style: italic;
+  }
+  .logo-svg {
+    display: block;
+    width: min(300px, 72%);
+    height: auto;
+    margin: 0 auto 1.25rem;
+    filter: drop-shadow(0 0 32px rgba(212,81,26,0.22));
+  }
+  .diamond-hero {
+    display: block;
+    width: 62px;
+    height: auto;
+    margin: 0 auto 0.85rem;
+    filter: drop-shadow(0 6px 18px rgba(58,120,201,0.5));
+    animation: floaty 3.6s ease-in-out infinite;
+  }
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+  }
+  .headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.6rem;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+  .headline span {
+    color: var(--orange-light);
+  }
+  .subhead {
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.55;
+  }
+  .prize-pill {
+    display: inline-block;
+    background: var(--blue-dark);
+    border: 1px solid var(--blue-bright);
+    border-radius: 100px;
+    padding: 3px 14px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--blue-bright);
+    letter-spacing: 0.04em;
+    margin-top: 0.5rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border-blue);
+    border-top: 3px solid var(--orange);
+    border-radius: 18px;
+    padding: 2rem;
+    box-shadow: 0 0 60px rgba(27,78,138,0.12), 0 24px 60px rgba(0,0,0,0.5);
+  }
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue-bright);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-blue);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.875rem;
+    margin-bottom: 0.875rem;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 0.875rem;
+  }
+  label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue-bright);
+  }
+  input {
+    background: var(--surface2);
+    border: 1px solid var(--border-blue);
+    border-radius: 9px;
+    padding: 0.72rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.975rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+  input::placeholder { color: rgba(238,243,250,0.3); }
+  input:focus {
+    border-color: var(--orange-light);
+    box-shadow: 0 0 0 3px rgba(212,81,26,0.15);
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  .divider {
+    height: 1px;
+    background: var(--border-blue);
+    margin: 1.25rem 0;
+  }
+  .guess-group {
+    background: linear-gradient(135deg, rgba(212,81,26,0.1), rgba(212,81,26,0.04));
+    border: 1px solid var(--border-orange);
+    border-radius: 13px;
+    padding: 1.25rem;
+    margin-bottom: 0;
+  }
+  .guess-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.07em;
+    color: var(--orange-light);
+    margin-bottom: 0.35rem;
+    display: block;
+  }
+  .guess-hint {
+    font-size: 0.77rem;
+    color: var(--muted);
+    margin-bottom: 0.85rem;
+    line-height: 1.5;
+  }
+  input#guess {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 0.05em;
+    text-align: center;
+    padding: 0.55rem 1rem;
+    color: var(--orange-light);
+    border-color: var(--border-orange);
+    background: var(--deep);
+  }
+  input#guess:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(212,81,26,0.2);
+  }
+  .submit-btn {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--orange);
+    border: none;
+    border-radius: 11px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.1em;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .submit-btn:hover { background: var(--orange-light); transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+  .spinner {
+    display: none;
+    width: 20px; height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-msg {
+    font-size: 0.78rem;
+    color: #F87171;
+    margin-top: 0.3rem;
+    display: none;
+  }
+  .global-error {
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.3);
+    border-radius: 9px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: #FCA5A5;
+    margin-top: 1rem;
+    display: none;
+    line-height: 1.5;
+  }
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 1rem 0;
+  }
+  .success-icon {
+    font-size: 3.5rem;
+    margin-bottom: 0.75rem;
+    animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes pop {
+    0% { transform: scale(0.4); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .success-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    color: var(--success);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+  }
+  .success-body {
+    color: var(--muted);
+    line-height: 1.65;
+    font-size: 0.92rem;
+  }
+  .guess-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--orange-light);
+    margin: 0.75rem 0;
+    letter-spacing: 0.04em;
+  }
+  .success-divider {
+    width: 60px;
+    height: 3px;
+    background: var(--orange);
+    border-radius: 2px;
+    margin: 1rem auto;
+  }
+  .footer-note {
+    text-align: center;
+    margin-top: 1.25rem;
+    font-size: 0.7rem;
+    color: rgba(238,243,250,0.2);
+    line-height: 1.65;
+  }
+  @media (max-width: 400px) {
+    .form-row { grid-template-columns: 1fr; }
+    .headline { font-size: 2.1rem; }
+    .card { padding: 1.4rem; }
+    .logo-restoration, .logo-hq { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <svg class="logo-svg" viewBox="0 0 600 412" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RestorationHQ — Commercial Restoration Experts">
+      <!-- RESTORATION wordmark -->
+      <text x="0" y="0" text-anchor="middle"
+            transform="translate(300,92) skewX(-9)"
+            font-family="'Bebas Neue', sans-serif" font-size="70"
+            letter-spacing="3" fill="#3A78C9">RESTORATION</text>
+
+      <!-- HQ -->
+      <text x="0" y="0" text-anchor="middle"
+            transform="translate(300,300) skewX(-9)"
+            font-family="'Bebas Neue', sans-serif" font-size="250"
+            fill="#D4511A">HQ</text>
+
+      <!-- Tagline -->
+      <text x="300" y="352" text-anchor="middle"
+            font-family="'DM Sans', sans-serif" font-weight="600" font-size="30"
+            letter-spacing="4" fill="#DCE6F2">COMMERCIAL</text>
+      <text x="300" y="388" text-anchor="middle"
+            font-family="'DM Sans', sans-serif" font-weight="600" font-size="30"
+            letter-spacing="4" fill="#DCE6F2">RESTORATION EXPERTS</text>
+    </svg>
+    <svg class="diamond-hero" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diamond">
+      <defs>
+        <linearGradient id="gem" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#E4F3FF"/>
+          <stop offset="0.45" stop-color="#7CC0F2"/>
+          <stop offset="1" stop-color="#2563B0"/>
+        </linearGradient>
+      </defs>
+      <path d="M36,26 L64,26 L86,46 L50,84 L14,46 Z" fill="url(#gem)"/>
+      <polygon points="36,26 64,26 60,46 40,46" fill="#ffffff" opacity="0.22"/>
+      <polygon points="14,46 40,46 50,84" fill="#1B4E8A" opacity="0.18"/>
+      <polygon points="60,46 86,46 50,84" fill="#0F3260" opacity="0.22"/>
+      <g stroke="#ffffff" stroke-width="1.3" stroke-linejoin="round" fill="none" opacity="0.6">
+        <path d="M14,46 H86"/>
+        <path d="M36,26 L40,46"/>
+        <path d="M64,26 L60,46"/>
+        <path d="M40,46 L50,84"/>
+        <path d="M60,46 L50,84"/>
+        <path d="M14,46 L50,84"/>
+        <path d="M86,46 L50,84"/>
+      </g>
+      <path d="M36,26 L64,26 L86,46 L50,84 L14,46 Z" fill="none" stroke="#EAF5FF" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M25,15 q2,5.5 7.5,7.5 q-5.5,2 -7.5,7.5 q-2,-5.5 -7.5,-7.5 q5.5,-2 7.5,-7.5 Z" fill="#ffffff" opacity="0.85"/>
+    </svg>
+    <h1 class="headline">How many <span>diamonds</span>?</h1>
+    <p class="subhead">Guess closest to the number of diamonds in the jar.</p>
+    <span class="prize-pill">🏆 Closest guess wins a prize</span>
+  </div>
+  <div class="card">
+    <div id="form-view">
+      <p class="section-label">Your info</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstname">First Name</label>
+          <input type="text" id="firstname" placeholder="Jane" autocomplete="given-name" />
+          <span class="error-msg" id="err-firstname">Required</span>
+        </div>
+        <div class="form-group">
+          <label for="lastname">Last Name</label>
+          <input type="text" id="lastname" placeholder="Smith" autocomplete="family-name" />
+          <span class="error-msg" id="err-lastname">Required</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="jane@company.com" autocomplete="email" />
+        <span class="error-msg" id="err-email">Enter a valid email</span>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" placeholder="+1 (555) 000-0000" autocomplete="tel" />
+        <span class="error-msg" id="err-phone">Required</span>
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="company">Company</label>
+        <input type="text" id="company" placeholder="Acme Corp" autocomplete="organization" />
+        <span class="error-msg" id="err-company">Required</span>
+      </div>
+      <div class="divider"></div>
+      <div class="guess-group">
+        <span class="guess-label">💎 Your Diamond Guess</span>
+        <p class="guess-hint">Enter your best estimate — how many diamonds are in the jar?</p>
+        <input type="number" id="guess" placeholder="0" min="1" max="999999" />
+        <span class="error-msg" id="err-guess">Enter a number greater than 0</span>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">
+        <span id="btn-text">Submit My Guess →</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+      <div class="global-error" id="global-error"></div>
+    </div>
+    <div class="success-screen" id="success-view">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">You're entered!</div>
+      <div class="guess-display" id="success-guess"></div>
+      <div class="success-divider"></div>
+      <p class="success-body">
+        Your guess is locked in.<br>
+        We'll announce the winner at the end of the show.<br><br>
+        <strong>Swing back by the RestorationHQ booth!</strong>
+      </p>
+    </div>
+  </div>
+  <p class="footer-note">By submitting you agree to receive follow-up communications from RestorationHQ.<br>We respect your privacy and will never share your data.</p>
+</div>
+<script>
+  // ---- HubSpot config -------------------------------------------------
+  // All three IDs are Sterling's real values (HubSpot account 23857531).
+  const HUBSPOT_PORTAL_ID = '23857531';
+  const HUBSPOT_FORM_ID   = '39c57ce1-20d1-45d6-976c-0af8778e56ab';
+  const CAMPAIGN_ID       = 'e859654c-53a8-4c8b-9495-9ec7e3f4e3fa';
+  // ---------------------------------------------------------------------
+  function val(id) { return document.getElementById(id).value.trim(); }
+  function showErr(id, show) {
+    document.getElementById('err-' + id).style.display = show ? 'block' : 'none';
+    document.getElementById(id).style.borderColor = show ? '#F87171' : '';
+    if (!show) document.getElementById(id).style.boxShadow = '';
+  }
+  function validate() {
+    let ok = true;
+    const fields = [
+      { id: 'firstname', fn: v => v.length > 0 },
+      { id: 'lastname',  fn: v => v.length > 0 },
+      { id: 'email',     fn: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+      { id: 'phone',     fn: v => v.length > 0 },
+      { id: 'company',   fn: v => v.length > 0 },
+      { id: 'guess',     fn: v => v.length > 0 && parseInt(v) > 0 }
+    ];
+    fields.forEach(({ id, fn }) => {
+      const valid = fn(val(id));
+      showErr(id, !valid);
+      if (!valid) ok = false;
+    });
+    return ok;
+  }
+  async function handleSubmit() {
+    if (!validate()) return;
+    const btn = document.getElementById('submit-btn');
+    const spinner = document.getElementById('spinner');
+    const btnText = document.getElementById('btn-text');
+    const globalErr = document.getElementById('global-error');
+    btn.disabled = true;
+    btnText.style.display = 'none';
+    spinner.style.display = 'block';
+    globalErr.style.display = 'none';
+    const firstname = val('firstname');
+    const lastname  = val('lastname');
+    const email     = val('email');
+    const phone     = val('phone');
+    const company   = val('company');
+    const guess     = val('guess');
+    try {
+      const payload = {
+        fields: [
+          { name: 'firstname',         value: firstname },
+          { name: 'lastname',          value: lastname  },
+          { name: 'email',             value: email     },
+          { name: 'phone',             value: phone     },
+          { name: 'company',           value: company   },
+          { name: 'diamond_jar_guess', value: guess     }
+        ],
+        context: {
+          hutk: getCookie('hubspotutk') || undefined,
+          pageUri: window.location.href,
+          pageName: 'Diamond Jar Contest — RestorationHQ Booth'
+        }
+      };
+      const res = await fetch(
+        `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }
+      );
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || `Error ${res.status}`);
+      }
+      document.getElementById('success-guess').textContent = parseInt(guess).toLocaleString() + ' 💎';
+      document.getElementById('form-view').style.display = 'none';
+      document.getElementById('success-view').style.display = 'block';
+    } catch (err) {
+      globalErr.textContent = 'Something went wrong: ' + err.message + '. Please try again or find us at the booth.';
+      globalErr.style.display = 'block';
+      btn.disabled = false;
+      btnText.style.display = 'block';
+      spinner.style.display = 'none';
+    }
+  }
+  function getCookie(name) {
+    const m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return m ? m[2] : null;
+  }
+</script>
+</body>
+</html>
