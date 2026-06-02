@@ -1,0 +1,1 @@
+# diamond-jar-contest
