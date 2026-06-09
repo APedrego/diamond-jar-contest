@@ -488,6 +488,11 @@
           { name: 'email',             value: email     },
           { name: 'phone',             value: phone     },
           { name: 'company',           value: company   },
+          // These two match how this HubSpot form's Company and Phone fields
+          // are mapped (Company object name + Location object phone). The form
+          // requires them, so they must be sent object-qualified or it 400s.
+          { objectTypeId: '0-2',         name: 'name',         value: company },
+          { objectTypeId: '2-11941029',  name: 'phone_number', value: phone   },
           { name: 'diamond_jar_guess', value: guess     }
         ],
         context: {
